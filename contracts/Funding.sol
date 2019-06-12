@@ -19,22 +19,22 @@ Modifier code is ran before the function code
 Results in less duplicated code for common conditions
 */
   modifier onlyNotFinished() {
-    require(!isFinished());
+    require(!isFinished(), "Contract must be not finished");
     _;
   }
 
   modifier onlyFinished() {
-    require(isFinished());
+    require(isFinished(), "Contract is must be finished");
     _;
   }
 
   modifier onlyNotFunded() {
-    require(!isFunded());
+    require(!isFunded(), "Contract must not be funded");
     _;
   }
 
   modifier onlyFunded() {
-    require(isFunded());
+    require(isFunded(), "Contract must be funded");
     _;
   }
 /*
