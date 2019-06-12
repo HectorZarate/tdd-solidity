@@ -68,7 +68,7 @@ I am removing it because it creates a sink with no way to get the ether out.
 
   function refund() public onlyFinished onlyNotFunded {
     uint amount = balances[msg.sender];
-    require(amount > 0);
+    require(amount > 0, "Must have deposited to withdraw");
     balances[msg.sender] = 0;
     msg.sender.transfer(amount);
   }
