@@ -37,39 +37,35 @@ Results in less duplicated code for common conditions
     require(isFunded(), "Contract must be funded");
     _;
   }
-/*
-This unnammed function is a fallback function
-It recieves ether in case ether is sent to this contract without a function call
-I am removing it because it creates a sink with no way to get the ether out.
-*/
-  // function () public payable {}
 
   constructor(uint _duration, uint _goal) public {
-    finishesAt = now + _duration;
-    goal = _goal;
+    // set fields of the contract for finishesAt and goal
   }
 
   function isFinished() public view returns (bool) {
-    return finishesAt <= now;
+    // if the current time is greater than finishesAt time
+    // return true, else return false
   }
 
   function isFunded() public view returns (bool) {
-    return raised >= goal;
+    // if raised is greater than or equal to goal return true, else return false
   }
 
   function donate() public onlyNotFinished payable {
-    balances[msg.sender] = balances[msg.sender].add(msg.value);
-    raised = raised.add(msg.value);
+    // create a new entry in the balances hash map,
+    // key is the address of the msg sender - value is the msg value.
+    // Add msg value to the raised value
   }
 
   function withdraw() public onlyOwner onlyFunded {
-    owner.transfer(address(this).balance);
+    // transfer the balance of this contract at this address
+    // to the owner of this contract
   }
 
   function refund() public onlyFinished onlyNotFunded {
-    uint amount = balances[msg.sender];
-    require(amount > 0, "Must have deposited to withdraw");
-    balances[msg.sender] = 0;
-    msg.sender.transfer(amount);
+    // check the donation amount of the address calling this function
+    // require that this amount is greater than zero, else reject it
+    // zero out the balance for the address calling this function
+    // transfer the amount to the donor
   }
 }

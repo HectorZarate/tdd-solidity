@@ -12,7 +12,7 @@ contract FundingTest {
   function () public payable {}
 
   function beforeEach() public {
-    funding = new Funding(1 days, 10 ether);
+    funding = new Funding(1 days, 100 finney);
   }
 
   function testSettingAnOwnerDuringCreation() public {
@@ -26,26 +26,26 @@ contract FundingTest {
 
   function testAcceptingDonations() public {
     Assert.equal(funding.raised(), 0, "Initial raised amount is different than 0");
-    funding.donate.value(1 ether)();
-    funding.donate.value(2 ether)();
-    Assert.equal(funding.raised(), 3 ether, "Raised amount is different than sum of donations");
+    funding.donate.value(10 finney)();
+    funding.donate.value(20 finney)();
+    Assert.equal(funding.raised(), 30 finney, "Raised amount is different than sum of donations");
   }
 
   function testTrackingDonorsBalance() public {
-    funding.donate.value(2 ether)();
-    funding.donate.value(2 ether)();
-    Assert.equal(funding.balances(this), 4 ether, "Donator balance is different than sum of donations");
+    funding.donate.value(5 finney)();
+    funding.donate.value(15 finney)();
+    Assert.equal(funding.balances(this), 20 finney, "Donator balance is different than sum of donations");
   }
 
   function testDonatingAfterTimeIsUp() public {
-    funding = new Funding(0, 10 ether);
-    bool result = address(funding).call.value(10 ether)(bytes4(keccak256("donate()")));
+    funding = new Funding(0, 100 finney);
+    bool result = address(funding).call.value(10 finney)(bytes4(keccak256("donate()")));
     Assert.equal(result, false, "Allows for donations when time is up");
   }
 
   function testWithdrawalByAnOwner() public {
     uint initBalance = address(this).balance;
-    funding.donate.value(5 finney)();
+    funding.donate.value(50 finney)();
     bool result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, false, "Allows for withdrawal before reaching the goal");
     funding.donate.value(50 finney)();
