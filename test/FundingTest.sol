@@ -15,6 +15,50 @@ contract FundingTest {
     funding = new Funding(1 days, 100 finney);
   }
 
+  function isFinished_shouldReturnTrue_whenCurrentTimeIsGreaterThanDeadlineTime() public {
+
+  }
+
+  function isFinished_shouldReturnFalse_whenCurrentTimeisLessThanDealineTime() public {
+
+  }
+
+  function isFunded_shouldReturnTrue_whenCurrentRaisedAmountisGreaterThanGoal() public {
+
+  }
+
+  function isFunded_shouldReturnFalse_whenCurrentRaisedAmountisLessThanGoal() public {
+
+  }
+
+  function donate_shouldUpdateDonateMapAndUpdateCurrentRaisedAmount() public {
+
+  }
+
+  function donate_shouldOnlyAcceptDonationWhenCurrentTimeIsLessThanDeadlineTime() public {
+
+  }
+
+  function withdraw_shouldAllowForWithdrawlByOwner() public {
+
+  }
+
+  function withdraw_shouldNot_AllowForWithdrawWhenNotFullyFunded() public {
+
+  }
+
+  function refund_shouldAllowRefundforDonors() public {
+
+  }
+
+  function refund_shouldNot_allowRefundEarly() public {
+
+  }
+
+  function refund_shouldNot_allowRefundWhenFullyFunded() public {
+
+  }
+
   function testSettingAnOwnerDuringCreation() public {
     Assert.equal(funding.owner(), this, "An owner is different than a deployer");
   }

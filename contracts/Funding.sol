@@ -4,13 +4,14 @@ pragma solidity 0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Funding is Ownable {
+contract Funding is Ownable { // refactor to kickstarter
   using SafeMath for uint;
 
-  uint public raised;
-  uint public goal;
-  uint public finishesAt;
-  mapping(address => uint) public balances;
+  // public fields can be read by any other address
+  uint public raised;     // currentRaisedAmount
+  uint public goal;       // goalAmount
+  uint public finishesAt; //deadlineTime
+  mapping(address => uint) public balances; // donationsMap
 
 /*
 Modifiers are used as an extention of a function.
