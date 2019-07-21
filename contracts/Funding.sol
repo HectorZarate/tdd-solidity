@@ -8,10 +8,10 @@ contract Funding is Ownable { // refactor to kickstarter
   using SafeMath for uint;
 
   // public fields can be read by any other address
-  uint public raised;     // currentRaisedAmount
-  uint public goal;       // goalAmount
-  uint public finishesAt; //deadlineTime
-  mapping(address => uint) public balances; // donationsMap
+  uint public currentRaisedAmount;     // currentRaisedAmount
+  uint public goalAmount;       // goalAmount
+  uint public deadline; //deadlineTime
+  mapping(address => uint) public donationsMap; // donationsMap
 
 /*
 Modifiers are used as an extention of a function.
@@ -19,54 +19,70 @@ Modifier code is ran before the function code
  `_;` continues to execution of the function
 Results in less duplicated code for common conditions
 */
-  modifier onlyNotFinished() {
+  modifier onlyWhenNotFinished() {
     require(!isFinished(), "Contract must be not finished");
     _;
   }
 
-  modifier onlyFinished() {
+  modifier onlyWhenFinished() {
     require(isFinished(), "Contract is must be finished");
     _;
   }
 
-  modifier onlyNotFunded() {
+  modifier onlyWhenNotFunded() {
     require(!isFunded(), "Contract must not be funded");
     _;
   }
 
-  modifier onlyFunded() {
+  modifier onlyWhenFunded() {
     require(isFunded(), "Contract must be funded");
     _;
   }
 
-  constructor(uint _duration, uint _goal) public {
+  constructor(uint _duration, uint _goalAmount) public {
     // set fields of the contract for finishesAt and goal
+    deadline = now + _duration;
+    goalAmount = _goalAmount;
   }
 
   function isFinished() public view returns (bool) {
     // if the current time is greater than finishesAt time
     // return true, else return false
+    return deadline <= now;
   }
 
   function isFunded() public view returns (bool) {
     // if raised is greater than or equal to goal return true, else return false
+    return currentRaisedAmount >= currentRaisedAmount;
   }
 
-  function donate() public onlyNotFinished payable {
+  function getCurrentRaisedAmount() public view returns (uint) {
+    return currentRaisedAmount;
+  }
+
+  function donate() public onlyWhenNotFinished payable {
     // create a new entry in the balances hash map,
     // key is the address of the msg sender - value is the msg value.
     // Add msg value to the raised value
+    donationsMap[msg.sender] = donationsMap[msg.sender].add(msg.value);
+    currentRaisedAmount = currentRaisedAmount.add(msg.value);
   }
 
-  function withdraw() public onlyOwner onlyFunded {
+  function withdraw() public onlyOwner onlyWhenFunded {
     // transfer the balance of this contract at this address
     // to the owner of this contract
+    owner.transfer(address(this).balance);
   }
 
-  function refund() public onlyFinished onlyNotFunded {
+  function refund() public onlyWhenFinished onlyWhenNotFunded {
     // check the donation amount of the address calling this function
     // require that this amount is greater than zero, else reject it
     // zero out the balance for the address calling this function
     // transfer the amount to the donor
+
+    uint amount = donationsMap[msg.sender];
+    require(amount > 0, "To be able to get a refund, user must donate");
+    donationsMap[msg.sender] = 0;
+    msg.sender.transfer(amount);
   }
 }
