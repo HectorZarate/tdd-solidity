@@ -45,11 +45,11 @@ contract FundingTest {
 
   function testWithdrawalByAnOwner() public {
     uint initBalance = address(this).balance;
-    funding.donate.value(5 finney)();
+    funding.donate.value(5 ether)();
     bool result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, false, "Allows for withdrawal before reaching the goal");
-    funding.donate.value(50 finney)();
-    Assert.equal(address(this).balance, initBalance - 100 finney, "Balance before withdrawal doesn't correspond to the sum of donations");
+    funding.donate.value(5 ether)();
+    Assert.equal(address(this).balance, initBalance - 10 ether, "Balance before withdrawal doesn't correspond to the sum of donations");
     result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, true, "Doesn't allow for withdrawal after reaching the goal");
     Assert.equal(address(this).balance, initBalance, "Balance after withdrawal doesn't correspond to the sum of donations");

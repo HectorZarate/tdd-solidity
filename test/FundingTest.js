@@ -4,6 +4,7 @@ const Funding = artifacts.require("Funding");
 
 const FINNEY = 10**15;
 const DAY = 3600 * 24;
+const ETHER = 10**18;
 
 contract("Funding", accounts => {
   const [firstAccount, secondAccount, thirdAccount] = accounts;
