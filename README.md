@@ -116,6 +116,9 @@ truffle console
 
 ##### Set up Accounts
 ```
+
+truffle console
+
 // Set up 2 accounts of generous donors
 
 // get accounts array 
