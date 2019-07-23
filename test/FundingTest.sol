@@ -17,6 +17,10 @@ contract FundingTest {
 
   // function donate_shouldUpdateDonateMapAndUpdateCurrentRaisedAmount() public {
     
+  //   funding.donate.value(2 ether)();
+  //   funding.donate.value(3 ether)();
+    
+  //   Assert.equal(funding.getCurrentRaisedAmount(), 0 ether, "Donator balance is different than sum of donations");
   // }
 
   // function donate_shouldOnlyAcceptDonationWhenCurrentTimeIsLessThanDeadlineTime() public {
@@ -53,10 +57,10 @@ contract FundingTest {
   // }
 
   // function testAcceptingDonations() public {
-  //   Assert.equal(funding.raised(), 0, "Initial raised amount is different than 0");
+  //   Assert.equal(funding.currentRaisedAmount(), 0, "Initial raised amount is different than 0");
   //   funding.donate.value(10 finney)();
   //   funding.donate.value(20 finney)();
-  //   Assert.equal(funding.raised(), 30 finney, "Raised amount is different than sum of donations");
+  //   Assert.equal(funding.currentRaisedAmount(), 30 finney, "Raised amount is different than sum of donations");
   // }
 
   // function testTrackingDonorsBalance() public {

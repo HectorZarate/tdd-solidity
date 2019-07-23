@@ -8,7 +8,7 @@ contract Funding is Ownable { // refactor to kickstarter
   using SafeMath for uint;
 
   // public fields can be read by any other address
-  uint public currentRaisedAmount;     // currentRaisedAmount
+  uint public currentRaisedAmount = 0;     // currentRaisedAmount
   uint public goalAmount;       // goalAmount
   uint public deadline; //deadlineTime
   mapping(address => uint) public donationsMap; // donationsMap
@@ -53,7 +53,7 @@ Results in less duplicated code for common conditions
 
   function isFunded() public view returns (bool) {
     // if raised is greater than or equal to goal return true, else return false
-    return currentRaisedAmount >= currentRaisedAmount;
+    return currentRaisedAmount >= goalAmount;
   }
 
   function getCurrentRaisedAmount() public view returns (uint) {
@@ -64,25 +64,18 @@ Results in less duplicated code for common conditions
     // create a new entry in the balances hash map,
     // key is the address of the msg sender - value is the msg value.
     // Add msg value to the raised value
+    // donationsMap[msg.sender] = donationsMap[msg.sender].add(msg.value);
+    // //donationsMap[msg.sender] = donationsMap[msg.sender];
+    // currentRaisedAmount = currentRaisedAmount.add(msg.value);
     donationsMap[msg.sender] = donationsMap[msg.sender].add(msg.value);
     currentRaisedAmount = currentRaisedAmount.add(msg.value);
   }
 
-  function withdraw() public onlyOwner onlyWhenFunded {
+
+    function withdraw() public onlyOwner onlyWhenFunded {
     // transfer the balance of this contract at this address
     // to the owner of this contract
+    // owner.transfer(address(this).balance);
     owner.transfer(address(this).balance);
-  }
-
-  function refund() public onlyWhenFinished onlyWhenNotFunded {
-    // check the donation amount of the address calling this function
-    // require that this amount is greater than zero, else reject it
-    // zero out the balance for the address calling this function
-    // transfer the amount to the donor
-
-    uint amount = donationsMap[msg.sender];
-    require(amount > 0, "To be able to get a refund, user must donate");
-    donationsMap[msg.sender] = 0;
-    msg.sender.transfer(amount);
   }
 }
