@@ -37,12 +37,6 @@ Results in less duplicated code for common conditions
     require(isFunded(), "Contract must be funded");
     _;
   }
-/*
-This unnammed function is a fallback function
-It recieves ether in case ether is sent to this contract without a function call
-I am removing it because it creates a sink with no way to get the ether out.
-*/
-  // function () public payable {}
 
   constructor(uint _duration, uint _goal) public {
     finishesAt = now + _duration;
