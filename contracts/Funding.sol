@@ -41,40 +41,30 @@ Results in less duplicated code for common conditions
 
   constructor(uint _duration, uint _goalAmount) public {
     // set fields of the contract for finishesAt and goal
-    deadline = now + _duration;
-    goalAmount = _goalAmount;
+
   }
 
   function isFinished() public view returns (bool) {
     // if the current time is greater than finishesAt time
     // return true, else return false
-    return deadline <= now;
+
   }
 
   function isFunded() public view returns (bool) {
     // if raised is greater than or equal to goal return true, else return false
-    return currentRaisedAmount >= goalAmount;
-  }
 
-  function getCurrentRaisedAmount() public view returns (uint) {
-    return currentRaisedAmount;
   }
 
   function donate() public onlyWhenNotFinished payable {
     // create a new entry in the balances hash map,
-    // key is the address of the msg sender - value is the msg value.
+    // key is the address of the msg sender - value is the msg value added to the previous value
     // Add msg value to the raised value
-    // donationsMap[msg.sender] = donationsMap[msg.sender].add(msg.value);
-    // //donationsMap[msg.sender] = donationsMap[msg.sender];
-    // currentRaisedAmount = currentRaisedAmount.add(msg.value);
-    donationsMap[msg.sender] = donationsMap[msg.sender].add(msg.value);
-    currentRaisedAmount = currentRaisedAmount.add(msg.value);
+
   }
 
   function withdraw() public onlyOwner onlyWhenFunded onlyWhenFinished {
     // transfer the balance of this contract at this address
     // to the owner of this contract
-    // owner.transfer(address(this).balance);
-    owner.transfer(address(this).balance);
+
   }
 }
