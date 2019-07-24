@@ -4,7 +4,7 @@ pragma solidity 0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Funding is Ownable { // refactor to kickstarter
+contract Funding is Ownable {
   using SafeMath for uint;
 
   // public fields can be read by any other address
@@ -71,8 +71,7 @@ Results in less duplicated code for common conditions
     currentRaisedAmount = currentRaisedAmount.add(msg.value);
   }
 
-
-    function withdraw() public onlyOwner onlyWhenFunded {
+  function withdraw() public onlyOwner onlyWhenFunded onlyWhenFinished {
     // transfer the balance of this contract at this address
     // to the owner of this contract
     // owner.transfer(address(this).balance);

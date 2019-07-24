@@ -15,89 +15,7 @@ Truffle
 ## Deploying
 `truffle migrate`
 
-## Interacting with the Deployed Contract
-
-```
-// getting the owner account
-truffle(development)> web3.eth.getAccounts(function(e,a) { accounts=a; });
-undefined
-
-truffle(development)> account = accounts[0];
-'0x9b9e36012932bf9e4b418145062be8da6cc5a490'
-
-// get owner account balance
-truffle(development)> web3.eth.getBalance(account).toString(10);
-'99880796000000000000'
-
-// Funding contract instance
-truffle(development)> Funding.deployed()
-
-// get deployed instance of Funding
-truffle(development)> Funding.deployed().then(function(instance) { funding = instance; });
-
-// Getting the balance that the owner account has donated
-truffle(development)> funding.balances.call(account).then(function(bal) {balance = bal});
-undefined
-
-truffle(development)> balance.toString(10);
-'0'
-
-// define a finney
-truffle(development)> const FINNEY = 10**15;
-undefined
-
-// donate 5 finney from owner account
-truffle(development)> funding.donate({ from: account, value: 5 * FINNEY });
-
-// check funding, goal is 100 finney
-truffle(development)> funding.isFunded().then(function(f) {isFunded = f});
-undefined
-
-truffle(development)> isFunded
-false
-
-// donate 100 finney
-truffle(development)> funding.donate({ from: account, value: 100 * FINNEY });
-
-// check isFunded 
-truffle(development)> funding.isFunded().then(function(f) {isFunded = f});
-undefined
-truffle(development)> isFunded
-true
-
-// declare DAY constant
-truffle(development)> const DAY = 3600 * 24;
-
-// create increaseTime util
-truffle(development)> 
-function increaseTime(duration) {const id = Date.now();return new Promise((resolve, reject) => {web3.currentProvider.sendAsync( {jsonrpc:"2.0",method: "evm_increaseTime",params: [duration],id: id},err1 => {if (err1) return reject(err1);web3.currentProvider.sendAsync({jsonrpc: "2.0",method: "evm_mine",id: id + 1},(err2, res) => {return err2 ? reject(err2) : resolve(res);});});});};
-
-
-// check if funding is finished, should be false
-truffle(development)> funding.isFinished().then(function(f) {finished = f})
-undefined
-
-truffle(development)> finished;
-false
-
-// increase time by a day
-truffle(development)> increaseTime(DAY);
-{ id: 1563743014647, jsonrpc: '2.0', result: '0x0' }
-
-// check if funding is over, should be true
-truffle(development)> funding.isFinished().then(function(f) {finished = f})
-undefined
-
-truffle(development)> finished;
-true
-
-// withdraw funds
-truffle(development)> funding.withdraw();
-
-```
-
-
-## Demo using multiple accounts, 50 ETH kickstarter
+## Demo using multiple accounts
 
 ```
 // Restart Ganache
@@ -155,8 +73,8 @@ funding.isFunded().then(function(f) {console.log(f.toString());});
 
 // check how much donny and paul have donated, should be 0
 
-funding.balances.call(paul).then(function(bal) {console.log(bal.toString());});
-funding.balances.call(donny).then(function(bal) {console.log(bal.toString());});
+funding.donationsMap.call(paul).then(function(bal) {console.log(bal.toString());});
+funding.donationsMap.call(donny).then(function(bal) {console.log(bal.toString());});
 ```
 
 ##### Donate
